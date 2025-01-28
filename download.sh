@@ -17,7 +17,7 @@ prompt_action() {
 }
 
 update_files() {
-    REPO_URL="https://github.com/Azumi67/Wireguard-panel.git"
+    REPO_URL="https://github.com/Azumi87/Wireguard-panel.git"
     TMP_DIR="/tmp/wireguard-panel-update"
     SCRIPT_DIR="/usr/local/bin/Wireguard-panel"
 
@@ -221,7 +221,7 @@ uninstall_mnu() {
 reinstall() {
     uninstall_mnu
     TARGET_DIR="/usr/local/bin/Wireguard-panel"
-    REPO_URL="https://github.com/Azumi67/Wireguard-panel.git"
+    REPO_URL="https://github.com/Azumi87/Wireguard-panel.git"
 
     echo -e "${LIGHT_YELLOW}Reinstalling... Removing old setup directory.${NC}"
     sudo rm -rf "$TARGET_DIR"
