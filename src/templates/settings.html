@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Settings</title>
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+    
+
+        .main-content {
+            margin-left: 330px;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .main-content h1::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #ccc;
+            margin-top: 5px;
+        }
+
+        .card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 300px;
+}
+
+        .card h2 {
+    font-size: 1.2rem;
+    color: #34495e;
+    margin-bottom: 20px;
+}
+
+        .card h2::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+            margin-top: 5px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .form-group {
+    margin-bottom: 15px;
+}
+
+        .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+        .form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+        button {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+form {
+    margin: 10px 0;
+    /*width: 50%;*/
+}
+
+        button:hover {
+    background-color: #2980b9;
+}
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f8fa;
+    color: #34495e;
+}
+
+.main-content {
+    margin: 20px;
+    padding: 15px;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+    margin-left: 310px;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #444;
+    background: #f9f9f9;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-button.active {
+    color: #2d3235;
+    border-bottom: 2px solid #3498db;
+    background: #afd8f3;
+}
+
+.tab-button:hover {
+    background: #f1f1f1;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.collapsible-container {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-left: 290px;
+}
+
+.collapsible-header {
+    padding: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+    background: #f9f9f9;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.collapsible-header:hover {
+    background: #f1f1f1;
+}
+
+.collapsible-content {
+    padding: 15px;
+    display: none;
+    background: #fff;
+}
+
+.collapsible-container.active .collapsible-content {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url('/static/fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/static/fonts/Poppins-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #b0bec5, #eceff1);
+    color: #333;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar {
+    font-size: 17px;
+    width: 300px;
+    background: linear-gradient(to bottom, #424242, #212121);
+    color: #ecf0f1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 20px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+}
+.sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+    background: #16a085;
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #0e6655;
+}
+.sidebar ul li a:hover {
+    background: #2ecc71;
+    color: #ffffff;
+    opacity: 1;
+}
+
+    </style>
+</head>
+
+<body>
+    {% include "sidebar.html" %}
+
+    <div class="main-content">
+        <div class="tabs">
+            <button class="tab-button active" data-tab="basics">Username & Password</button>
+            <button class="tab-button" data-tab="custom-endpoint">Custom Endpoint IP</button>
+            <button class="tab-button" data-tab="web-server">Web Server Configuration</button>
+            <button class="tab-button" data-tab="wireguard-config">Wireguard Configuration</button>
+        </div>
+    
+        <div class="tab-content active" id="basics">
+            <div class="card">
+                
+                <form id="updateUserForm" method="POST">
+                    <div class="form-group">
+                        <label for="newUsername">New Username:</label>
+                        <input type="text" id="newUsername" name="newUsername" placeholder="Enter new username">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password:</label>
+                        <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+                    </div>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="tab-content" id="custom-endpoint">
+            <div class="card">
+                
+                <form id="updateCustomIpForm" method="POST">
+                    <div class="form-group">
+                        <label for="customIp">Enter Custom IP or Subdomain:</label>
+                        <input type="text" id="customIp" name="customIp" placeholder="Enter an IP address or Subdomain">
+                    </div>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="tab-content" id="web-server">
+            <div class="card">
+                
+                <form id="updateFlaskForm" method="POST">
+                    <div class="form-group">
+                        <label for="webPort">Web Server Port:</label>
+                        <input type="number" id="webPort" name="webPort" placeholder="Enter port (1-65535)" min="1"
+                            max="65535">
+                    </div>
+                    <div class="form-group">
+                        <label for="enableTLS">Enable TLS</label>
+                        <select id="enableTLS" name="enableTLS">
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </select>
+                    </div>
+                    <div class="form-group tls-dependent" style="display: none;">
+                        <label for="certPath">Cert Key:</label>
+                        <input type="text" id="certPath" name="certPath" placeholder="Cert Key Path">
+                    </div>
+                    <div class="form-group tls-dependent" style="display: none;">
+                        <label for="keyPath">privkey:</label>
+                        <input type="text" id="keyPath" name="keyPath" placeholder="PrivKey Path">
+                    </div>
+                    <button type="submit">Update</button>
+                    </form>
+                    </div>
+        </div>
+        <div id="alertModal" class="alert-modal">
+            <div class="alert-modal-content">
+                <p id="alertMessage">Alert Message</p>
+            </div>
+        </div>
+        
+        <div id="confirmModal" class="confirm-modal">
+            <div class="confirm-modal-content">
+                <p id="confirmMessage">Are you sure?</p>
+                <div class="confirm-actions">
+                    <button id="confirmYes" class="btn btn-yes">Yes</button>
+                    <button id="confirmNo" class="btn btn-no">No</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="tab-content" id="wireguard-config">
+            <div class="card">
+                
+                <form id="updateWGForm" method="POST">
+                    <div class="form-group">
+                        <label for="wgConfigSelect">Select Configuration:</label>
+                        <select id="wgConfigSelect" name="wgConfig">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="wgPort">Listen Port:</label>
+                        <input type="number" id="wgPort" name="wgPort" placeholder="Enter port" min="1" max="65535">
+                    </div>
+                    <div class="form-group">
+                        <label for="wgMTU">MTU:</label>
+                        <input type="number" id="wgMTU" name="wgMTU" placeholder="Enter MTU">
+                    </div>
+                    <div class="form-group">
+                        <label for="wgDNS">DNS:</label>
+                        <input type="text" id="wgDNS" name="wgDNS" placeholder="Enter DNS (e.g., 1.1.1.1, 8.8.8.8)">
+                    </div>
+                    <button type="submit">Update Configuration</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="static/js/settings.js"></script>
+</body>
+
+</html>

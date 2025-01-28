@@ -1,0 +1,237 @@
+@font-face {
+    font-family: 'Vazir';
+    src: url('../fonts/Vazir-Regular.woff2') format('woff2'),
+        url('../fonts/Vazir-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazir', sans-serif;
+    background: linear-gradient(135deg, #141b37, #2a2f4a);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    direction: rtl;
+}
+
+.main-container {
+    width: 95%;
+    max-width: 420px;
+    margin: auto;
+    text-align: center;
+}
+
+.card {
+    background: #1d2a3a;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.card-title {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: #16a085;
+    text-align: center;
+}
+
+.info-box {
+    background: #22344c;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 10px 0;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.info-box h2 {
+    font-size: 1rem;
+    color: #16a085;
+    margin-bottom: 6px;
+}
+
+.info-box p {
+    font-size: 0.95rem;
+    color: #ccdce3;
+}
+
+.progress-bar {
+    background: #2f3b52;
+    border-radius: 10px;
+    height: 16px;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.progress-bar .progress {
+    background: #16a085;
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.footer-actions button,
+.footer-actions a {
+    background-color: #16a085;
+    color: #fff;
+    border: none;
+    text-decoration: none;
+    padding: 8px 16px;
+    font-family: Vazir;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.footer-actions button:hover,
+.footer-actions a:hover {
+    background-color: #139076;
+}
+
+.icon-btn {
+    background-color: #16a085;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background-color: #139076;
+}
+
+.icon-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.server-location {
+    font-size: 1rem;
+    margin-right: 50px;
+    color: #ccdce3;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.server-location img {
+    width: 24px;
+    height: 16px;
+    border-radius: 3px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #1d2a3a;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-content img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+}
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.github-link {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.github-link i {
+    margin-right: 8px;
+}
+
+.github-link:hover {
+    color: #4CAF50;
+}
+
+@media (max-width: 480px) {
+    .main-container {
+        max-width: 100%;
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+    }
+
+    .info-box {
+        padding: 12px;
+    }
+
+    .info-box h2 {
+        font-size: 0.9rem;
+    }
+
+    .info-box p {
+        font-size: 0.85rem;
+    }
+
+    .footer-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .server-location {
+        font-size: 0.9rem;
+    }
+}

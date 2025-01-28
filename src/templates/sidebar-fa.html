@@ -1,0 +1,37 @@
+<div class="sidebar">
+        <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span>{{ username }}</span>
+                <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> خارج شوید</a>
+        </div>
+        <hr class="sidebar-separator">
+        <h2>پنل وایرگارد</h2>
+        <ul>
+                <li><a href="/home" class="{{ 'active' if request.path == '/home' else '' }}"><i
+                                        class="fas fa-home"></i> صفحه اصلی</a></li>
+                <li><a href="/peers" class="{{ 'active' if request.path == '/peers' else '' }}"><i
+                                        class="fas fa-users"></i> کاربران و قالب ها</a></li>
+                <li><a href="/settings" class="{{ 'active' if request.path == '/settings' else '' }}"><i
+                                        class="fas fa-cog"></i> تنظیمات</a></li>
+                <li><a href="/backups" class="{{ 'active' if request.path == '/backups' else '' }}"><i
+                                        class="fas fa-database"></i> بک اپ</a></li>
+                <li><a href="/warp" class="{{ 'active' if request.path == '/warp' else '' }}"><i class="fa fa-bolt"></i>
+                                وارپ (ازمایشی)</a></li>
+                <li><a href="/telegram" class="{{ 'active' if request.path == '/telegram' else '' }}"><i
+                                        class="fa fa-key"></i> ربات تلگرام و API</a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+                <a href="https://github.com/Azumi67" target="_blank" class="github-link">
+                        <i class="fab fa-github"></i> Azumi67 GitHub
+                </a>
+                <form method="POST" action="/set-language" id="language-form">
+                        <select name="language" class="language-selector"
+                                onchange="document.getElementById('language-form').submit()">
+                                <option value="en" {% if session['language']=='en' %}selected{% endif %}>English
+                                </option>
+                                <option value="fa" {% if session['language']=='fa' %}selected{% endif %}>فارسی</option>
+                        </select>
+                </form>
+        </div>
+</div>

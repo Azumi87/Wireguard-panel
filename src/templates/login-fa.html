@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <title>ورود</title>
+    <link rel="stylesheet" href="static/css/login-fa.css">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="form-container">
+            <h1>خوش آمدید</h1>
+            <form method="POST" action="/login">
+                <label for="username">نام کاربری</label>
+                <input type="text" id="username" name="username" placeholder="نام کاربری خود را وارد کنید" required>
+                <label for="password">گذرواژه</label>
+                <input type="password" id="password" name="password" placeholder="گذرواژه خود را وارد کنید" required>
+                <label>
+                    <input type="checkbox" name="remember" value="yes"> مرا به خاطر بسپار
+                </label>
+                <button type="submit">ورود</button>
+            </form>
+            <div class="message">
+                حساب کاربری ندارید؟ <a href="/register">ثبت‌ نام کنید</a>.
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='images/ringo_high_quality.png') }}" alt="تصویر ورود">
+            <div class="footer">
+                <p>پنل وایرگارد توسط <a href="https://github.com/Azumi67" target="_blank">آزومی</a></p>
+            </div>
+        </div>
+        <form method="POST" action="/set-language" id="language-form">
+            <select name="language" class="language-selector" onchange="document.getElementById('language-form').submit()">
+                <option value="en" {% if session['language']=='en' %}selected{% endif %}>English</option>
+                <option value="fa" {% if session['language']=='fa' %}selected{% endif %}>فارسی</option>
+            </select>
+        </form>
+
+    </div>
+</body>
+
+</html>

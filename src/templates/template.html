@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>کلاینت وایرگارد - {{ peer_name }}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}" />
+    <script defer src="{{ url_for('static', filename='js/template.js') }}"></script>
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="card">
+            <div class="client-header">
+                <span><i class="fa-solid fa-network-wired"></i> کلاینت وایرگارد</span>
+                <span id="client-status">
+                    <span class="status-label" id="client-status-label">در حال بررسی...</span>
+                </span>
+            </div>
+
+            <div class="server-location">
+                <span>موقعیت مکانی سرور: {{ server_location.country }}</span>
+                {% if server_location.country_code %}
+                <img src="https://flagcdn.com/w40/{{ server_location.country_code }}.png"
+                    alt="{{ server_location.country }} flag" />
+                {% endif %}
+            </div>
+
+            <div class="info-box">
+                <h2>نام کاربری</h2>
+                <p id="peer-name">در حال بارگذاری...</p>
+            </div>
+
+            <div class="info-box">
+                <h2>محدودیت حجم داده</h2>
+                <p id="data-limit">در حال بارگذاری...</p>
+            </div>
+
+
+            <div class="info-box">
+                <h2>حجم باقی مانده</h2>
+                <div class="progress-bar">
+                    <div class="progress" id="remaining-progress"></div>
+                </div>
+                <p id="remaining-amount-label">در حال بارگذاری...</p>
+            </div>
+
+            <div class="info-box">
+                <h2>تاریخ انقضا</h2>
+                <div class="progress-bar">
+                    <div class="progress" id="expiry-progress"></div>
+                </div>
+                <p id="expiry-date">در حال بارگذاری...</p>
+            </div>
+
+            <div class="footer-actions">
+                <button id="refresh-btn" class="refresh-btn">بروز رسانی</button>
+
+                <button id="download-config-btn" class="icon-btn">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+
+                <button id="qr-code-btn" class="icon-btn">
+                    <i class="fa-solid fa-qrcode"></i>
+                </button>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <a href="https://github.com/Azumi67" target="_blank" class="github-link">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+        </footer>
+    </div>
+
+    <div id="qr-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close-btn">&times;</span>
+            <h3>QR Code</h3>
+            <img id="qr-image" src="" alt="QR Code" />
+        </div>
+    </div>
+
+    <script>
+        window.peerInfo = {
+            peerName: "{{ peer_name | safe }}",
+            configFile: "{{ config_file | safe }}",
+            token: "{{ token | safe }}"
+        };
+    </script>
+</body>
+
+</html>

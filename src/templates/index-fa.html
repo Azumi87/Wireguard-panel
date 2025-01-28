@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد وایرگارد</title>
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <script src="static/js/qrcode.min.js"></script>
+    <link rel="stylesheet" href="static/css/style-fa.css"> 
+
+    
+
+</head>
+
+<body>
+    {% include "sidebar-fa.html" %}
+
+    <div class="main-content">
+        <h1>داشبورد وایرگارد</h1>
+        <hr class="title-separator">
+
+<div class="metrics">
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="cpu-progress"></circle>
+            </svg>
+            <div class="progress-value" id="cpu-value">0%</div>
+        </div>
+        <h2>پردازنده</h2>
+    </div>
+
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="ram-progress"></circle>
+            </svg>
+            <div class="progress-value" id="ram-value">0%</div>
+        </div>
+        <h2>حافظه رم</h2>
+    </div>
+
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="disk-progress"></circle>
+            </svg>
+            <div class="progress-value" id="disk-value">0%</div>
+        </div>
+        <h2>فضای دیسک</h2>
+
+    </div>
+
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="uptime-progress"></circle>
+            </svg>
+            <div class="progress-value" id="uptime-value">0d 0h 0m</div>
+        </div>
+        <h2>اپتایم سرور</h2>
+    </div>
+</div>
+<div class="mini-box-row">
+    <div class="mini-box" id="logsBox">
+        <i class="fa fa-file-text"></i>
+        <span>گزارش‌ ها</span>
+    </div>
+
+    <div class="mini-box" id="serverIPBox">
+        <i class="fa fa-globe"></i>
+        <span>آی‌پی سرور</span>
+        <div class="ip-tooltip" id="serverIPTooltip">
+            <p><strong>آیپی 4:</strong> <span id="ipv4Address"> ... در حال بارگذاری</span></p>
+            <p><strong>آیپی 6:</strong> <span id="ipv6Address">.. در حال بارگذاری</span></p>
+        </div>
+    </div>
+
+    <div class="mini-box" id="uploadBox">
+        <i class="fa fa-upload"></i>
+        <span>آپلود</span>
+
+        <p id="uploadSpeed">0 KB/s</p>
+    </div>
+
+    <div class="mini-box" id="downloadBox">
+        <i class="fa fa-download"></i>
+        <span>دانلود</span>
+        <p id="downloadSpeed">0 KB/s</p>
+    </div>
+
+    <div class="mini-box" id="warpStatusBox">
+        <i class="fa fa-bolt"></i>
+        <span>وضعیت وارپ</span>
+        <p id="warpStatus">.. در حال بارگذاری</p>
+    </div>
+
+    <div class="mini-box" id="xrayStatusBox">
+        <i class="fa fa-server"></i>
+        <span>وضعیت Xray</span>
+        <p id="xrayStatus">.. در حال بارگذاری</p>
+    </div>
+
+    <div class="mini-box" id="botStatusBox">
+        <i class="fa fa-robot"></i>
+        <span>وضعیت ربات</span>
+        <p id="botStatus">.. در حال بارگذاری</p>
+    </div>
+</div>
+
+<div id="logsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeLogsModal">&times;</span>
+        <h2>گزارش‌ها</h2>
+        <div class="filter-section">
+            <select id="logFilter">
+                <option value="20">۲۰ گزارش</option>
+                <option value="50">۵۰ گزارش</option>
+                <option value="100">۱۰۰ گزارش</option>
+            </select>
+            <button id="refreshLogs" class="refresh-btn">
+                <i class="fa fa-refresh"></i>
+            </button>
+            <button id="clearLogs" class="clear-btn">
+                <i class="fa fa-trash"></i> پاک کردن گزارش‌ ها
+            </button>
+        </div>
+        <div id="logsContent" class="logs-content"></div>
+    </div>
+</div>
+
+<div id="wireguard-interface" class="container">
+    <h2>اینترفیس وایرگارد</h2>
+    <div class="interface-header">
+        <div class="config-selector">
+            <label for="config-select"><strong>کانفیگ ها:</strong></label>
+            <select id="configSelect" class="dropdown">
+                <option value="wg0.conf" selected>wg0.conf</option>
+
+            </select>
+        </div>
+        <button id="toggleInterfaceBtn" class="toggle-btn">فعال کنید</button>
+
+    </div>
+    <div class="interface-details">
+        <div class="info-row">
+            <strong>اینترفیس:</strong>
+            <span id="wg-interface">.. در حال بارگذاری</span>
+        </div>
+        <div class="info-row">
+            <strong>وضعیت:</strong>
+            <span id="wg-status" class="status inactive">غیر فعال</span>
+        </div>
+        <div class="info-row">
+            <strong>اپتایم وایرگارد:</strong>
+            <span id="wg-uptime">0d 0h 0m</span>
+        </div>
+        <div class="info-row">
+            <strong>کلید پرایوت</strong>
+            <span id="wg-private-key">پنهان</span>
+            <button id="toggleKeyBtn" class="small-btn">نمایش</button>
+        </div>
+        <div class="info-row">
+            <strong>ایپی ادرس:</strong>
+            <span id="wg-ip">.. در حال بارگذاری</span>
+        </div>
+        <div class="info-row">
+            <strong>پورت:</strong>
+            <span id="wg-port">.. در حال بارگذاری</span>
+        </div>
+        <div class="info-row">
+            <strong>DNS:</strong>
+            <span id="wg-dns">.. در حال بارگذاری</span>
+        </div>
+        <div id="alertModal" class="alert-modal">
+            <div class="alert-modal-content">
+                <p id="alertMessage">پیام هشدار</p>
+            </div>
+        </div>
+        
+        <div id="confirmModal" class="confirm-modal">
+            <div class="confirm-modal-content">
+                <p id="confirmMessage">آیا مطمئن هستید؟</p>
+                <div class="confirm-actions">
+                    <button id="confirmYes" class="btn btn-yes">بله</button>
+                    <button id="confirmNo" class="btn btn-no">خیر</button>
+                </div>
+            </div>
+        </div>
+
+
+<div class="container-header">
+    <div class="search-filter" style="flex: 1; display: flex;">
+        <input type="text" id="searchInput" placeholder="جستجو بر اساس ایپی یا نام">
+        <select id="filterSelect" onchange="applyFilter()">
+            <option value="">همه</option>
+            <option value="active">فعال</option>
+            <option value="inactive">غیرفعال</option>
+        </select>
+    </div>
+    <button id="createPeerBtn" style="margin-left: auto;">ساخت کاربر</button>
+    <button id="deleteAllBtn" style="background: #262524d2;">پاک کردن کانفیگ ها</button>
+</div>
+
+
+<div id="deletePeerModal" class="modal">
+    <div class="modal-content">
+        <span id="closeDeletePeerModal">&times;</span>
+        <h2>پاک کردن کاربر</h2>
+        <p>ایا از حذف این کاربر اطمینان دارید؟</p>
+        <button id="confirmDeletePeer">بله، بپاک</button>
+        <button id="cancelDeletePeer">لغو</button>
+    </div>
+</div>
+
+<div id="deleteAllModal" class="modal">
+    <div class="modal-content">
+        <span id="closeDeleteAllModal">&times;</span>
+        <h2>پاک کردن تمام کانفیگ ها</h2>
+        <p>ایا از حذف تمامی ان ها اطمینان دارید ؟</p>
+        <div class="form-actions">
+            <button id="confirmDeleteAll">بله همه را پاک کن</button>
+            <button id="cancelDeleteAll">لغو</button>
+        </div>
+    </div>
+</div>
+
+<div id="peers" class="container">
+    <h2>محیط کاربران</h2>
+    <button id="toggleConfig" class="toggle-btn">.. در حال بارگذاری</button>
+    <div id="peerContainer"></div>
+</div>
+
+<div id="createPeerModal" class="modal">
+    <div class="modal-content compact-modal create-modal-content">
+        <span id="closeModal" class="close-btn">&times;</span>
+        <h2>ساخت کاربر</h2>
+        <form id="peerForm"> <!-- This ID must match the JavaScript -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="peerName">نام کاربر:</label>
+                    <input type="text" id="peerName" title="نام انگلیسی استفاده نمایید"
+                        placeholder="نام کاربر را وارد نمایید" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="peerIp">ایپی ادرس کاربر</label>
+                    <select id="peerIp" required>
+                        <option value="" disabled selected>انتخاب ایپی ادرس های موجود</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="publicKey">کلید عمومی:</label>
+                    <input type="text" id="publicKey" placeholder="خودکار ساخته میشود" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataLimit">محدودیت حجم:</label>
+                    <div class="inline-fields">
+                        <input type="number" id="dataLimit" placeholder="حجم" required min="1" max="1024"
+                            title="بین 1 تا 1024 انتخاب نمایید">
+                        <select id="dataLimitUnit" style="width: 25%;">
+                            <option value="MiB">MiB</option>
+                            <option value="GiB">GiB</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dns">DNS:</label>
+                    <input type="text" id="dns" placeholder="1.1.1.1, 8.8.8.8" style="width: 100%;">
+                </div>
+
+                <div class="form-group">
+                    <label for="persistentKeepalive">Persistent Keepalive (seconds):</label>
+                    <input type="number" id="persistentKeepalive" placeholder="25 (default)" min="0" value="25"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mtu">MTU:</label>
+                    <input type="number" id="mtu" placeholder="1280 (default)" min="1280" value="1280" required>
+                </div>
+            </div>
+
+            <h3>تاریخ:</h3>
+            <div class="form-grid expiry-grid">
+                <div class="form-group">
+                    <label for="expiryMonths">ماه:</label>
+                    <input type="number" id="expiryMonths" placeholder="ماه" min="0" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="expiryDays">:روز</label>
+                    <input type="number" id="expiryDays" placeholder="روز" min="0" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="expiryHours">:ساعت</label>
+                    <input type="number" id="expiryHours" placeholder="ساعت" min="0" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="expiryMinutes">:دقیقه</label>
+                    <input type="number" id="expiryMinutes" placeholder="دقیقه" min="0" style="width: 100%;">
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="bulkAdd">
+                <label for="bulkAdd">اضافه کردن گروهی</label>
+            </div>
+
+            <div class="form-group" id="bulkPeerCountContainer" style="display: none;">
+                <label for="bulkPeerCount">تعداد کاربران:</label>
+                <input type="number" id="bulkPeerCount" placeholder="تعداد کاربران" min="1" max="100" />
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="firstUsage">
+                <label for="firstUsage">شروع تاریخ پس از اتصال نخست</label>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="generateKeys" class="btn btn-secondary">تولید کلید</button>
+                <button type="submit" class="btn btn-primary">ساخت کاربر</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="editPeerModal" class="modal">
+    <div class="modal-content compact-modal edit-modal-content">
+        <span id="closeEditModal" class="close">&times;</span>
+        <h2>ویرایش کاربر</h2>
+        <form id="editPeerForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="editDataLimit">محدودیت حجم</label>
+                    <div class="inline-fields">
+                        <input type="number" id="editDataLimit" placeholder="Enter new data limit" style="width: 70%;">
+                        <select id="editDataLimitUnit" style="width: 25%;">
+                            <option value="MB">MiB</option>
+                            <option value="GB">GiB</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editExpiry">انقضا : ماه - روز - ساعت - دقیقه</label>
+                    <div class="inline-fields">
+                        <input type="number" id="editExpiryMonths" placeholder="ماه" min="0" style="width: 22%;">
+                        <input type="number" id="editExpiryDays" placeholder="روز" min="0" style="width: 22%;">
+                        <input type="number" id="editExpiryHours" placeholder="ساعت" min="0" style="width: 22%;">
+                        <input type="number" id="editExpiryMinutes" placeholder="دقیقه" min="0" style="width: 22%;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editDns">DNS:</label>
+                    <input type="text" id="editDns" placeholder="1.1.1.1, 8.8.8.8" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="editPeerIp">ایپی کاربر</label>
+                    <input type="text" id="editPeerIp" readonly style="width: 100%; background-color: #f0f0f0;">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="peersContainer"></div>
+<div id="paginationContainer" class="pagination"></div>
+
+    
+    <button id="toggleConfig" class="toggle-btn">.. در حال بارگذاری</button>
+
+    <div id="qrCodeModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="closeQrModal">&times;</span>
+            <h2>کد QR</h2>
+            <canvas id="qrCodeCanvas" width="300" height="300"></canvas>
+            <button id="saveQrCode">ذخیره با فرمت PNG</button>
+        </div>
+    </div>
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p> لطفا شکیبا باشید...</p>
+    </div>
+
+    
+    <script src="static/js/script-fa.js"></script>
+</body>
+
+</html>

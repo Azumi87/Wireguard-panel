@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireguard Dashboard</title>
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <script src="static/js/qrcode.min.js"></script>
+    <link rel="stylesheet" href="static/css/style.css"> 
+
+</head>
+
+<body>
+    {% include "sidebar.html" %}
+
+    <div class="main-content">
+        <h1>Wireguard Dashboard</h1>
+        <hr class="title-separator">
+
+<div class="metrics">
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="cpu-progress"></circle>
+            </svg>
+            <div class="progress-value" id="cpu-value">0%</div>
+        </div>
+        <h2>CPU Usage</h2>
+    </div>
+
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="ram-progress"></circle>
+            </svg>
+            <div class="progress-value" id="ram-value">0%</div>
+        </div>
+        <h2>RAM Usage</h2>
+    </div>
+
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="disk-progress"></circle>
+            </svg>
+            <div class="progress-value" id="disk-value">0%</div>
+        </div>
+        <h2>Disk Usage</h2>
+    </div>
+
+    <div class="card">
+        <div class="circle-progress">
+            <svg class="progress-ring" width="130" height="130">
+                <circle class="progress-ring__circle-bg" cx="65" cy="65" r="55"></circle>
+                <circle class="progress-ring__circle" cx="65" cy="65" r="55" id="uptime-progress"></circle>
+            </svg>
+            <div class="progress-value" id="uptime-value">0d 0h 0m</div>
+        </div>
+        <h2>System Uptime</h2>
+    </div>
+</div>
+<div class="mini-box-row">
+    <div class="mini-box" id="logsBox">
+        <i class="fa fa-file-text"></i>
+        <span>Logs</span>
+    </div>
+
+    <div class="mini-box" id="serverIPBox">
+        <i class="fa fa-globe"></i>
+        <span>Server IP</span>
+        <div class="ip-tooltip" id="serverIPTooltip">
+            <p><strong>IPv4:</strong> <span id="ipv4Address">Loading...</span></p>
+            <p><strong>IPv6:</strong> <span id="ipv6Address">Loading...</span></p>
+        </div>
+    </div>
+
+    <div class="mini-box" id="uploadBox">
+        <i class="fa fa-upload"></i>
+        <span>Upload</span>
+        <p id="uploadSpeed">0 KB/s</p>
+    </div>
+
+    <div class="mini-box" id="downloadBox">
+        <i class="fa fa-download"></i>
+        <span>Download</span>
+        <p id="downloadSpeed">0 KB/s</p>
+    </div>
+
+    <div class="mini-box" id="warpStatusBox">
+        <i class="fa fa-bolt"></i>
+        <span>Warp Status</span>
+        <p id="warpStatus">Loading...</p>
+    </div>
+
+    <div class="mini-box" id="xrayStatusBox">
+        <i class="fa fa-server"></i>
+        <span>Xray Status</span>
+        <p id="xrayStatus">Loading...</p>
+    </div>
+
+    <div class="mini-box" id="botStatusBox">
+        <i class="fa fa-robot"></i>
+        <span>Bot Status</span>
+        <p id="botStatus">Loading...</p>
+    </div>
+</div>
+
+<div id="logsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeLogsModal">&times;</span>
+        <h2>Logs</h2>
+        <div class="filter-section">
+            <select id="logFilter">
+                <option value="20">20 Logs</option>
+                <option value="50">50 Logs</option>
+                <option value="100">100 Logs</option>
+            </select>
+            <button id="refreshLogs" class="refresh-btn">
+                <i class="fa fa-refresh"></i>
+            </button>
+            <button id="clearLogs" class="clear-btn">
+                <i class="fa fa-trash"></i> Clear Logs
+            </button>
+        </div>
+        <div id="logsContent" class="logs-content"></div>
+    </div>
+</div>
+
+<div id="wireguard-interface" class="container">
+    <h2>Wireguard Interface</h2>
+    <div class="interface-header">
+        <div class="config-selector">
+            <label for="config-select"><strong>Configuration:</strong></label>
+            <select id="configSelect" class="dropdown">
+                <option value="wg0.conf" selected>wg0.conf</option>
+
+            </select>
+        </div>
+        <button id="toggleInterfaceBtn" class="toggle-btn">Enable</button>
+
+    </div>
+    <div class="interface-details">
+        <div class="info-row">
+            <strong>Interface:</strong>
+            <span id="wg-interface">Loading...</span>
+        </div>
+        <div class="info-row">
+            <strong>Status:</strong>
+            <span id="wg-status" class="status inactive">Inactive</span>
+        </div>
+        <div class="info-row">
+            <strong>Wireguard Uptime:</strong>
+            <span id="wg-uptime">0d 0h 0m</span>
+        </div>
+        <div class="info-row">
+            <strong>Private Key:</strong>
+            <span id="wg-private-key">Hidden</span>
+            <button id="toggleKeyBtn" class="small-btn">Show</button>
+        </div>
+        <div class="info-row">
+            <strong>IP Address:</strong>
+            <span id="wg-ip">Loading...</span>
+        </div>
+        <div class="info-row">
+            <strong>Port:</strong>
+            <span id="wg-port">Loading...</span>
+        </div>
+        <div class="info-row">
+            <strong>DNS:</strong>
+            <span id="wg-dns">Loading...</span>
+        </div>
+        
+    </div>
+</div>
+
+
+<div class="container-header">
+    <div class="search-filter" style="flex: 1; display: flex;">
+        <input type="text" id="searchInput" placeholder="Search by Name or IP">
+        <select id="filterSelect" onchange="applyFilter()">
+            <option value="">All</option>
+            <option value="active">Active</option>
+            <option value="inactive">Not Active</option>
+        </select>
+    </div>
+    <button id="createPeerBtn" style="margin-left: auto;">Create a Peer</button>
+    <button id="deleteAllBtn" style="background: #f65d3fd2;">Delete All Configurations</button>
+</div>
+
+<div id="deletePeerModal" class="modal">
+    <div class="modal-content">
+        <span id="closeDeletePeerModal">&times;</span>
+        <h2>Delete Peer</h2>
+        <p>Are you sure you want to delete this peer?</p>
+        <button id="confirmDeletePeer">Yes, Delete</button>
+        <button id="cancelDeletePeer">Cancel</button>
+    </div>
+</div>
+<div id="alertModal" class="alert-modal">
+    <div class="alert-modal-content">
+        <p id="alertMessage">Alert Message</p>
+    </div>
+</div>
+
+<div id="confirmModal" class="confirm-modal">
+    <div class="confirm-modal-content">
+        <p id="confirmMessage">Are you sure?</p>
+        <div class="confirm-actions">
+            <button id="confirmYes" class="btn btn-yes">Yes</button>
+            <button id="confirmNo" class="btn btn-no">No</button>
+        </div>
+    </div>
+</div>
+
+<div id="deleteAllModal" class="modal">
+    <div class="modal-content">
+        <span id="closeDeleteAllModal">&times;</span>
+        <h2>Delete All Configurations</h2>
+        <p>Are you sure you want to delete all peers and configurations?</p>
+        <div class="form-actions">
+            <button id="confirmDeleteAll">Yes, Delete All</button>
+            <button id="cancelDeleteAll">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="peers" class="container">
+    <h2>Created Peers</h2>
+    <button id="toggleConfig" class="toggle-btn">Loading...</button>
+    <div id="peerContainer"></div>
+</div>
+
+<div id="createPeerModal" class="modal">
+    <div class="modal-content compact-modal">
+        <span id="closeModal" class="close">&times;</span>
+        <h2>Create a Peer</h2>
+        <form id="peerForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="peerName">Peer Name:</label>
+                    <input type="text" id="peerName"
+                        title="Only letters, numbers, underscores are allowed."
+                        placeholder="Enter Peer Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="peerIp">Peer IP Address:</label>
+                    <select id="peerIp" required>
+                        <option value="" disabled selected>Select an available IP</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="publicKey">Public Key:</label>
+                    <input type="text" id="publicKey" placeholder="Automatically generated" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataLimit">Data Limit:</label>
+                    <div class="inline-fields">
+                        <input type="number" id="dataLimit" placeholder="Enter limit" required min="1" max="1024"
+                            title="Data limit must be between 1 and 1024 MiB/GiB">
+                        <select id="dataLimitUnit" style="width: 25%;">
+                            <option value="MiB">MiB</option>
+                            <option value="GiB">GiB</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dns">DNS:</label>
+                    <input type="text" id="dns" placeholder="e.g., 1.1.1.1, 8.8.8.8" style="width: 100%;">
+                </div>
+
+                <div class="form-group">
+                    <label for="persistentKeepalive">Persistent Keepalive (seconds):</label>
+                    <input type="number" id="persistentKeepalive" placeholder="25 (default)" min="0" value="25"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mtu">MTU:</label>
+                    <input type="number" id="mtu" placeholder="1280 (default)" min="1280" value="1280" required>
+                </div>
+            </div>
+
+            <h3>Set Expiry Duration:</h3>
+            <div class="form-grid expiry-grid">
+                <div class="form-group">
+                    <label for="expiryMonths">Months:</label>
+                    <input type="number" id="expiryMonths" placeholder="Months" min="0" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="expiryDays">Days:</label>
+                    <input type="number" id="expiryDays" placeholder="Days" min="0" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="expiryHours">Hours:</label>
+                    <input type="number" id="expiryHours" placeholder="Hours" min="0" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="expiryMinutes">Minutes:</label>
+                    <input type="number" id="expiryMinutes" placeholder="Minutes" min="0" style="width: 100%;">
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="bulkAdd">
+                <label for="bulkAdd">Bulk add</label>
+            </div>
+            
+            <div class="form-group" id="bulkPeerCountContainer" style="display: none;">
+                <label for="bulkPeerCount">Number of peers</label>
+                <input type="number" id="bulkPeerCount" placeholder="number of peers " min="1" max="100" />
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="firstUsage">
+                <label for="firstUsage">Calculate Date after first usage</label>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="generateKeys" class="btn btn-secondary">Generate Keys</button>
+                <button type="submit" class="btn btn-primary">Create Peer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="editPeerModal" class="modal">
+    <div class="modal-content compact-modal">
+        <span id="closeEditModal" class="close">&times;</span>
+        <h2>Edit Peer</h2>
+        <form id="editPeerForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="editDataLimit">Data Limit:</label>
+                    <div class="inline-fields">
+                        <input type="number" id="editDataLimit" placeholder="Enter new data limit" style="width: 70%;">
+                        <select id="editDataLimitUnit" style="width: 25%;">
+                            <option value="MB">MiB</option>
+                            <option value="GB">GiB</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editExpiry">Expiry (Months, Days, Hours, Minutes):</label>
+                    <div class="inline-fields">
+                        <input type="number" id="editExpiryMonths" placeholder="Months" min="0" style="width: 22%;">
+                        <input type="number" id="editExpiryDays" placeholder="Days" min="0" style="width: 22%;">
+                        <input type="number" id="editExpiryHours" placeholder="Hours" min="0" style="width: 22%;">
+                        <input type="number" id="editExpiryMinutes" placeholder="Minutes" min="0" style="width: 22%;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editDns">DNS:</label>
+                    <input type="text" id="editDns" placeholder="e.g., 1.1.1.1, 8.8.8.8" style="width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label for="editPeerIp">Peer IP:</label>
+                    <input type="text" id="editPeerIp" readonly style="width: 100%; background-color: #f0f0f0;">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="peersContainer"></div>
+<div id="paginationContainer" class="pagination"></div>
+
+    
+    <button id="toggleConfig" class="toggle-btn">Loading...</button>
+
+    <div id="qrCodeModal" class="modal" style="display: none; justify-content: center; align-items: center;">
+        <div class="modal-content" style="text-align: center; position: relative;">
+            <span id="closeQrModal"
+                style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+            <h2>QR Code</h2>
+            <canvas id="qrCodeCanvas" style="margin: 20px auto;"></canvas>
+            <button id="saveQrCode" style="margin-top: 15px;">Save as PNG</button>
+        </div>
+    </div>
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Please Wait a sec...</p>
+    </div>
+    <script src="static/js/script.js"></script>
+</body>
+
+</html>

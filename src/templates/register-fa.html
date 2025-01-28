@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ثبت اکانت</title>
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='images/site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="stylesheet" href="static/css/register-fa.css">
+
+</head>
+
+<body>
+    <div class="main-container">
+        <h1>ساخت اکانت</h1>
+        <form method="POST" action="/register">
+            <label for="username">نام کاربری</label>
+            <input type="text" id="username" name="username" placeholder="نام کاربری وارد نمایید" required>
+            <label for="password">گذرواژه</label>
+            <input type="password" id="password" name="password" placeholder="گذرواژه خود را وارد نمایید" required>
+            <button type="submit">ثبت اکانت</button>
+        </form>
+        <div class="message">
+            قبلا ثبت نام کردید ؟ <a href="/login">از اینجا وارد شوید</a>.
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>پنل وایرگارد توسط <a href="https://github.com/Azumi67" target="_blank">آزومی</a></p>
+    </div>
+    <form method="POST" action="/set-language" id="language-form">
+        <select name="language" class="language-selector" onchange="document.getElementById('language-form').submit()">
+            <option value="en" {% if session['language']=='en' %}selected{% endif %}>English</option>
+            <option value="fa" {% if session['language']=='fa' %}selected{% endif %}>فارسی</option>
+        </select>
+    </form>
+</body>
+
+</html>

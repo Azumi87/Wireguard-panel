@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پشتیبانی و بازگردانی</title>
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/css/style-fa.css">
+    <script src="static/js/backup-fa.js" defer></script>
+    <style>
+td[dir="rtl"] {
+    text-align: right;
+    direction: rtl;
+}
+
+button {
+    text-align: center;
+    direction: ltr; 
+}
+
+        .content {
+            position: absolute; 
+            top: 0;
+            left: 0; 
+            right: 330px; 
+            bottom: 0; 
+            padding: 20px; 
+            overflow-y: auto; 
+            box-sizing: border-box; 
+            background-color: #f9f9f9; 
+        }
+        .container {
+            /*margin: 20px auto;*/
+            /*max-width: 800px;*/
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .backup-section {
+            margin-left: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            direction: ltr;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /*width: 60%;*/
+        }
+
+        .backup-section h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .backup-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            direction: ltr;
+        }
+
+        .backup-table th,
+        .backup-table td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+
+        .backup-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .backup-table tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .folder-section {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .folder-title {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: #555;
+            display: inline-block;
+        }
+
+        .folder-content {
+            padding-left: 15px;
+        }
+
+        .folder-content table {
+            margin-top: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include "sidebar-fa.html" %}
+
+    <div class="main-content container">
+
+        <div class="backup-section">
+            <h2>پشتیبانی به صورت دستی</h2>
+            <button id="createBackupBtn" class="btn-primary">ساخت فایل پشتیبانی</button>
+            <table id="manualBackupList" class="backup-table">
+                <thead>
+                    <tr>
+                        <th>نام فایل</th>
+                        <th>دستورات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3">در حال بارگذاری...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="backup-section">
+            <h2>پشتیبانی از اینترفیس وایرگارد</h2>
+            <table id="wireguardBackupList" class="backup-table">
+                <thead>
+                    <tr>
+                        <th>نام فایل</th>
+                        <th>دستورات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">در حال بارگذاری...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="alertModal" class="alert-modal">
+            <div class="alert-modal-content">
+                <p id="alertMessage">پیام هشدار</p>
+            </div>
+        </div>
+        
+        <div id="confirmModal" class="confirm-modal">
+            <div class="confirm-modal-content">
+                <p id="confirmMessage">آیا مطمئن هستید؟</p>
+                <div class="confirm-actions">
+                    <button id="confirmYes" class="btn btn-yes">بله</button>
+                    <button id="confirmNo" class="btn btn-no">خیر</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="backup-section">
+            <h2>فایل پشتیبانی دیتابیس</h2>
+            <table id="dbBackupList" class="backup-table">
+                <thead>
+                    <tr>
+                        <th>نام فایل</th>
+                        <th>دستورات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">در حال بارگذاری...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+</body>
+
+</html>

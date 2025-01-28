@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کانفیگ وارپ</title>
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/style-fa.css">
+    <link rel="stylesheet" href="/static/css/warp-fa.css">
+    <script src="static/js/warp-fa.js"></script>
+    
+</head>
+
+        <body>
+            <div class="container">
+                {% include "sidebar-fa.html" %}
+                <div class="content">
+                    <div class="warp-box">
+                        <button class="spoiler-toggle" data-target="fullWarp">
+                            کانفیگ وارپ
+                            <i class="fa fa-arrow-down"></i>
+                        </button>
+                        <div id="fullWarp" class="spoiler-content">
+                            <div class="button-container compact">
+                                <button id="installFullWARPButton" class="btn">
+                                    <i class="fa fa-download"></i> نصب
+                                </button>
+                                <button id="stopFullWARPButton" class="btn">
+                                    <i class="fa fa-stop"></i> توقف
+                                </button>
+                                <button id="resetFullWARPButton" class="btn">
+                                    <i class="fa fa-refresh"></i> ریست
+                                </button>
+                                <button id="uninstallFullWARPButton" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i> حذف
+                                </button>
+                            </div>
+                            <div class="progress-container">
+                                <progress id="installProgress" value="0" max="100"></progress>
+                                <span id="progressText">0%</span>
+                            </div>
+                            <div class="status-mini-box">
+                                <h4>وضعیت وارپ:</h4>
+                                <span id="fullWarpStatus" class="status-badge inactive">Inactive</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warp-box">
+                        <button class="spoiler-toggle" data-target="xrayWarp">
+                            کانفیگ xray و warp
+                            <i class="fa fa-arrow-down"></i>
+                        </button>
+                        <div id="xrayWarp" class="spoiler-content">
+                            <div class="button-container compact">
+                                <button id="installXrayWARPButton" class="btn">
+                                    <i class="fa fa-download"></i> نصب
+                                </button>
+                                <button id="stopXrayWARPButton" class="btn">
+                                    <i class="fa fa-stop"></i> توقف
+                                </button>
+                                <button id="resetXrayWARPButton" class="btn">
+                                    <i class="fa fa-refresh"></i> ریست
+                                </button>
+                                <button id="uninstallXrayWARPButton" class="btn btn-danger">
+                                    <i class="fa fa-trash"></i> حذف
+                                </button>
+                            </div>
+                            <div class="progress-container">
+                                <progress id="installProgress2" value="0" max="100"></progress>
+                                <span id="progressText2">0%</span>
+                            </div>
+                            <div class="status-mini-box">
+                                <h4>وضعیت warp و xray</h4>
+                                <span id="xrayStatus" class="status-badge inactive">غیرفعال</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="alertModal" class="alert-modal">
+                        <div class="alert-modal-content">
+                            <p id="alertMessage">پیام هشدار</p>
+                        </div>
+                    </div>
+                    
+                    <div id="confirmModal" class="confirm-modal">
+                        <div class="confirm-modal-content">
+                            <p id="confirmMessage">آیا مطمئن هستید؟</p>
+                            <div class="confirm-actions">
+                                <button id="confirmYes" class="btn btn-yes">بله</button>
+                                <button id="confirmNo" class="btn btn-no">خیر</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="warp-box">
+                        <button class="spoiler-toggle" data-target="geosites">
+                            انتخاب Geosites
+                            <i class="fa fa-arrow-down"></i>
+                        </button>
+                        <div id="geosites" class="spoiler-content">
+                            <form id="geositesForm" class="geosites">
+                                <label><input type="checkbox" name="geosites" value="geosite:google"> Google</label>
+                                <label><input type="checkbox" name="geosites" value="geosite:facebook"> Facebook</label>
+                                <label><input type="checkbox" name="geosites" value="geosite:meta"> Meta</label>
+                                <label><input type="checkbox" name="geosites" value="geosite:youtube"> YouTube</label>
+                                <label><input type="checkbox" name="geosites" value="geosite:amazon"> Amazon</label>
+                                <label><input type="checkbox" name="geosites" value="geosite:netflix"> Netflix</label>
+                                <label><input type="checkbox" name="geosites" value="geosite:github"> GitHub</label>
+                                <label><input type="checkbox" name="geosites" value="geosite:openai"> OpenAI</label>
+                                <button type="submit">ذخیره</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </body>
+
+        </html>

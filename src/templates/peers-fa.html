@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/style-fa.css">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <script src="static/js/qrcode.min.js"></script>
+    <script src="static/js/peers-fa.js" defer></script>
+</head>
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative;
+    background: #fcfbfb;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*padding: 15px;*/
+    font-size: 14px;
+    color: #333; 
+}
+#peerContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; 
+    padding: 10px;
+}
+
+.close-modal {
+    position: absolute;
+    top: -6px;
+    right: 420px;
+    color: #585757;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 100;
+}
+
+
+.modal-content canvas {
+    /*margin: 10px auto;*/
+}
+
+.modal-content button {
+    margin-top: 20px;
+}
+
+.qr-code {
+    display: block; 
+    margin: 10px auto; 
+    width: 100px; 
+    height: 100px; 
+    border-radius: 8px; 
+    background-color: #ffffff; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.image-templates-container {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-around;
+gap: 20px;
+padding: 20px;
+}
+
+.peer-template {
+    width: 220px; 
+    height: 300px; 
+    border-radius: 10px; 
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.peer-template:hover {
+    transform: scale(1.03); 
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.peer-template-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.4;
+    z-index: 2;
+}
+
+.peer-template .qr-code {
+    width: 60px; 
+    height: 60px;
+    border-radius: 5px;
+}
+.btn {
+    display: inline-block;
+    padding: 8px 16px; 
+    font-size: 12px; 
+    border: none;
+    border-radius: 5px;
+    background-color: #1abc9c;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.pagination button {
+    margin: 0 3px; 
+    padding: 5px 10px; 
+    font-size: 12px; 
+}
+.form-group input,
+.form-group select {
+    padding: 8px; 
+    font-size: 12px; 
+}
+.config-selector select {
+    width: 50%;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+.search-filter input,
+.search-filter select {
+    padding: 8px; 
+    font-size: 14px; 
+}
+.btn:hover {
+    background-color: #0056b3;
+}
+
+</style>
+
+<body>
+    {% include "sidebar-fa.html" %}
+
+    <div class="main-content">
+    
+        <div class="config-selector">
+            <label for="configSelect">کانفیگ:</label>
+            <select id="configSelect">
+                <option value="wg0.conf" selected>wg0.conf</option>
+            </select>
+        </div>
+    
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="جستجو بر اساس نام یا IP">
+            <select id="filterSelect">
+                <option value="">همه</option>
+                <option value="active">فعال</option>
+                <option value="inactive">غیرفعال</option>
+            </select>
+        </div>
+    
+        <div id="peerContainer" class="container"></div>
+    
+        <div id="paginationContainer" class="pagination"></div>
+    
+        <div id="qrCodeModal" class="modal" style="display: none; justify-content: center; align-items: center;">
+            <div class="modal-content" style="text-align: center; position: relative;">
+                <span id="closeQrModal"
+                    style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+                <h2>کد QR</h2>
+                <canvas id="qrCodeCanvas" style="margin: 20px auto;"></canvas>
+                <button id="saveQrCode" class="btn btn-primary unique-save-btn" style="margin-top: 10px;">
+                    ذخیره به فرمت JPG
+                </button>
+
+            </div>
+        </div>
+        <div id="alertModal" class="alert-modal">
+            <div class="alert-modal-content">
+                <p id="alertMessage">پیام هشدار</p>
+            </div>
+        </div>
+        
+        <div id="confirmModal" class="confirm-modal">
+            <div class="confirm-modal-content">
+                <p id="confirmMessage">آیا مطمئن هستید؟</p>
+                <div class="confirm-actions">
+                    <button id="confirmYes" class="btn btn-yes">بله</button>
+                    <button id="confirmNo" class="btn btn-no">خیر</button>
+                </div>
+            </div>
+        </div>
+
+    
+        <div id="editPeerModal" class="modal">
+            <div class="modal-content compact-modal">
+                <span id="closeEditModal" class="close">&times;</span>
+                <h2>ویرایش کاربر</h2>
+                <form id="editPeerForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="editDataLimit">محدودیت حجم</label>
+                            <div class="inline-fields">
+                                <input type="number" id="editDataLimit" placeholder="محدودیت حجم جدید را وارد کنید"
+                                    style="width: 70%;">
+                                <select id="editDataLimitUnit" style="width: 25%;">
+                                    <option value="MB">MiB</option>
+                                    <option value="GB">GiB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editExpiry">انقضا (ماه، روز، ساعت، دقیقه):</label>
+                            <div class="inline-fields">
+                                <input type="number" id="editExpiryMonths" placeholder="ماه" min="0" style="width: 22%;">
+                                <input type="number" id="editExpiryDays" placeholder="روز" min="0" style="width: 22%;">
+                                <input type="number" id="editExpiryHours" placeholder="ساعت" min="0" style="width: 22%;">
+                                <input type="number" id="editExpiryMinutes" placeholder="دقیقه" min="0" style="width: 22%;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDns">DNS:</label>
+                            <input type="text" id="editDns" placeholder="مثال: 1.1.1.1، 8.8.8.8" style="width: 100%;">
+                        </div>
+                        <div class="form-group">
+                            <label for="editPeerIp">IP کاربر:</label>
+                            <input type="text" id="editPeerIp" readonly style="width: 100%; background-color: #f0f0f0;">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p> لطفا شکیبا باشید...</p>
+    </div>
+</body>
+
+</html>
